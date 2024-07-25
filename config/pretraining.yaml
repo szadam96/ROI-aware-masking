@@ -1,0 +1,43 @@
+epochs: 100
+seed: 42
+precision: 16-mixed
+
+augmentations:
+  apply: ['random_crop', 'rotation']
+  horizontal_flip_p: 0.5
+  image_size: 192
+  random_crop_scale: 0.90
+  rotation_limit: 15
+
+dataloader:
+  balance: False
+  batch_size: 30
+  roi_aware: True
+  masking_precentage: 0.75
+  num_samples: null
+  root_dir: /media/data2/pacs_preproc
+  trian_json: /media/data2/pacs_preproc/train.json
+  val_json: /media/data2/pacs_preproc/val.json
+
+model:
+  image_size: 192
+  num_frames: 16
+  num_channels: 1
+  patch_size: 16
+
+training:
+  learning_rate: 0.0005
+  optimizer: Adam
+  scheduler: CosineAnnealingLR
+  weight_alpha: 0.8
+  weighted: false
+  CosineAnnealingLR_params:
+    T_max: 10
+    eta_min: 0.00001
+
+callbacks:
+  model_checkpoint:
+    mode: min
+    monitor: val_loss
+    save_top_k: 2
+    verbose: true

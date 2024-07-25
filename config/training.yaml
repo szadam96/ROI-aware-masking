@@ -1,0 +1,50 @@
+epochs: 40
+seed: 42
+precision: 32
+
+augmentations:
+  apply: ['random_crop', 'rotation', 'blur', 'contrast']
+  image_size: 192
+  random_crop_scale: 0.90
+  rotation_limit: 15
+  contrast_limit: 0.3
+  blur_p: 0.4
+
+dataloader:
+  balance: false
+  batch_size: 8
+  include_binary_mask: True
+  num_samples: null
+  root_dir: /media/data1/EFNet_data/preproc/
+  trian_json: /media/data2/pacs_preproc/train.json
+  val_json: /media/data2/pacs_preproc/val.json
+  test_json: /media/data2/pacs_preproc/test.json
+
+model:
+  image_size: 192
+  num_frames: 16
+  num_channels: 1
+  patch_size: 16
+  ckpt_path: logs_pretraining/best_loss.ckpt
+  dropout: 0.3
+
+training:
+  to_predict: ['LVEF']
+  loss: mse
+  freeze_encoder: false
+  separate_lr_encoder: true
+  learning_rate: 0.0005
+  optimizer: Adam
+  scheduler: CosineAnnealingLR
+  weight_alpha: 0.7
+  weighted: true
+  CosineAnnealingLR_params:
+    T_max: 10
+    eta_min: 0.0001
+
+callbacks:
+  model_checkpoint:
+    mode: max
+    monitor: r2_lvef_dicom
+    save_top_k: 2
+    verbose: true

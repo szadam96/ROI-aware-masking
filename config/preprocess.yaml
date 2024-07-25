@@ -1,0 +1,10 @@
+data_dir: 'test_preprocess'
+
+cardiac_cycle_prediction:
+  checkpoint_path: 'preprocess/cardiac_cycle_prediction.ckpt'
+
+json_generation:
+  output: 'test_preprocess_json'
+  frames_to_sample: 16
+  label: ['LVEF']
+  name: 'dataset_name'

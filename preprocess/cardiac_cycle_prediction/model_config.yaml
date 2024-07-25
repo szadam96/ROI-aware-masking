@@ -1,0 +1,32 @@
+model_module:
+  name: Echo2dVideosNetLM
+
+  model:
+    name: UVT
+    emb_dim: 256
+    intermediate_size: 1024
+    num_hidden_layers: 4
+    img_per_video: null
+    SDmode: reg
+    rm_branch: EF
+    reg_ed_only: False
+
+  loss:
+    name: L1Loss
+
+  optimizer:
+    lr: 0.0002
+    weight_decay: 0.0001
+
+data_module:
+  name: Echo2dPicturesDM
+  batch_size: 1
+  num_workers: 1
+
+  datasets:
+    predict:
+      name: Echo2dVideo
+      frames_per_video: null
+      pictures_dataset:
+        name: Echo2dPicturesPredict
+
